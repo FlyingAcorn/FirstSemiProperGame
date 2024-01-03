@@ -63,7 +63,7 @@ public class Player : MonoBehaviour
         var movementDirection = new Vector3(_movementX, 0, _movementZ);
         var inputMagnitude = Mathf.Clamp01(movementDirection.magnitude);
         _myAnim.SetFloat(Magnitude,inputMagnitude,0.1f,Time.deltaTime);
-        if (_movementX == 0 & _movementZ == 0) return;
+        if (_movementX == 0 && _movementZ == 0) return;
         transform.position += movementDirection * (moveForce * Time.deltaTime);
         var targetAngle = Mathf.Atan2(_movementX, _movementZ) * Mathf.Rad2Deg;
         var angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref _currentVelocity, smoothTime);
