@@ -21,18 +21,21 @@ public class Button : MonoBehaviour
     public void Lvl1()
     {
         if (GameManager.Instance.victoryCount >= 0) SceneManager.LoadScene(1);
+        GameManager.Instance.UpdateGameState(GameManager.GameState.Play);
     }
     
     public void Lvl2()
     {
         if (GameManager.Instance.victoryCount >= 1) SceneManager.LoadScene(2);
         else victoryButtonLockSprites[0].transform.DOPunchRotation(new Vector3(0, 0, 10), 2, 5);
+        GameManager.Instance.UpdateGameState(GameManager.GameState.Play);
     }
 
     public void Lvl3()
     {
         if (GameManager.Instance.victoryCount >= 2) SceneManager.LoadScene(3);
         else victoryButtonLockSprites[1].transform.DOPunchRotation(new Vector3(0, 0, 10), 2, 5);
+        GameManager.Instance.UpdateGameState(GameManager.GameState.Play);
     }
     
 }

@@ -5,8 +5,7 @@ public class Lock : MonoBehaviour
 {
     [SerializeField] private int requiredNumber;
     [SerializeField] private SpriteRenderer mySprite;
-     
-
+    
     private void Awake()
     {
         GameManager.OnGameStateChanged += GameManagerOnOnGameStateChanged;

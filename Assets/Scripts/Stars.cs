@@ -21,7 +21,7 @@ public class Stars : MonoBehaviour
     {
         if (state == GameManager.GameState.Win && GameManager.Instance.victoryCount >= requiredNumber)
         {
-            Invoke("FadeIn",4);
+            Invoke("FadeIn",3);
         }
     }
 
