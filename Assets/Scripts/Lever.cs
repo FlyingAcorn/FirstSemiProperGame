@@ -1,17 +1,22 @@
 using UnityEngine;
 public class Lever : MonoBehaviour,ICollision
 {
-    private Transform _myTransform;
-    [SerializeField] public bool leverCondition;
+    protected Transform _myTransform;
+    [SerializeField] protected bool leverCondition;
     
-    void Start()
+    private void Start()
     {
         _myTransform = GetComponent<Transform>();
     }
 
     public virtual void Interact()
-    {
+    { 
         leverCondition = !leverCondition;
+        LeverSwitch();
+    }
+
+    protected void LeverSwitch()
+    {
         switch (leverCondition)
         {
             case true:

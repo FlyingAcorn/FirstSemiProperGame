@@ -14,10 +14,7 @@ public class Trap : MonoBehaviour
     
     IEnumerator Delay()
     {
-        while (GameManager.Instance.state == GameManager.GameState.Play)
-        {
-            yield return new WaitForSeconds(delayTime);
+        yield return new WaitForSeconds(delayTime +3);
             _myAnim.SetTrigger(TrapActive);
-        }
     }
 }

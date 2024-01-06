@@ -3,16 +3,31 @@ public class Lights : MonoBehaviour
 {
     [SerializeField] private GameObject[] lights;
     [SerializeField] private GameObject door;
-    [SerializeField] private float leverCount;
+    [SerializeField] private int leverCount;
+
+    private int LeverCount
+    {
+        get => leverCount;
+        set => leverCount = Mathf.Clamp(value, 0, 2);
+    }
 
     private void OnEnable()
     {
         LeverLight.LightToggle += LightSwitch;
+        LeverTimer.TimesUp += SetZero;
+    }
+
+    private void SetZero()
+    {
+        LeverCount = 0;
+        lights[0].SetActive(false);
+        lights[1].SetActive(false);
+        door.SetActive(true);
     }
 
     private void LightSwitch(bool lever)
     {
-        leverCount += lever ? +1:-1;
+        LeverCount += lever ? +1:-1;
         switch (leverCount)
         {
             case 0:
@@ -36,5 +51,6 @@ public class Lights : MonoBehaviour
     private void OnDisable()
     {
         LeverLight.LightToggle -= LightSwitch;
+        LeverTimer.TimesUp -= SetZero;
     }
 }

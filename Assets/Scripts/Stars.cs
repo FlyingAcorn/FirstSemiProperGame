@@ -27,7 +27,6 @@ public class Stars : MonoBehaviour
 
     private void FadeIn()
     {
-        Debug.Log("kek");
         mySprite.DOFade(1, 2);
         transform.DOPunchRotation(new Vector3(0, 0, -10f), 2, 5);
     }
