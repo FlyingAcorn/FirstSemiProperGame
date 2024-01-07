@@ -22,7 +22,7 @@ public class Button : MonoBehaviour
     {
         if (GameManager.Instance.victoryCount >= 0) SceneManager.LoadScene(1);
         GameManager.Instance.UpdateGameState(GameManager.GameState.Play);
-        GameManager.Instance.victoryCount = 0;
+        GameManager.Instance.victoryCount = GameManager.Instance.victoryCount >=3 ? 3 : 0;
     }
 
     public void Lvl2()
@@ -31,7 +31,7 @@ public class Button : MonoBehaviour
         {
             SceneManager.LoadScene(2);
             GameManager.Instance.UpdateGameState(GameManager.GameState.Play);
-            GameManager.Instance.victoryCount = 1;
+            GameManager.Instance.victoryCount = GameManager.Instance.victoryCount >=3 ? 3 : 1;
         }
         else victoryButtonLockSprites[0].transform.DOPunchRotation(new Vector3(0, 0, 10), 2, 5);
     }
@@ -42,7 +42,7 @@ public class Button : MonoBehaviour
         {
             SceneManager.LoadScene(3);
             GameManager.Instance.UpdateGameState(GameManager.GameState.Play);
-            GameManager.Instance.victoryCount = 2;
+            GameManager.Instance.victoryCount = GameManager.Instance.victoryCount >=3 ? 3 : 2;
         }
         else victoryButtonLockSprites[1].transform.DOPunchRotation(new Vector3(0, 0, 10), 2, 5);
     }

@@ -35,7 +35,11 @@ public class UIManager : MonoBehaviour
              break;
           case GameManager.GameState.Win:
              _myAnim.SetTrigger(Win);
-             panels[1].SetActive(true);
+             if (GameManager.Instance.victoryCount >= 3)
+             {
+                panels[3].SetActive(true);
+             }
+             else panels[1].SetActive(true);
              break;
           case GameManager.GameState.Lose:
              _myAnim.SetTrigger(Lose);
