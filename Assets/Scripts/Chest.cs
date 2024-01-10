@@ -22,7 +22,6 @@ public class Chest : MonoBehaviour,ICollision
         _myMeshFilter.mesh = chestToggle ? chests[0] : chests[1];
         _myMeshCollider.sharedMesh = chestToggle ? chests[0] : chests[1];
         confetti.SetActive(chestToggle);
-        GameManager.Instance.victoryCount += 1;
         GameManager.Instance.UpdateGameState(GameManager.GameState.Win);
 
     }

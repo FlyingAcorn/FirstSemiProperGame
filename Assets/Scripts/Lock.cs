@@ -1,31 +1,21 @@
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UI;
 
 public class Lock : MonoBehaviour
 {
     [SerializeField] private int requiredNumber;
-    [SerializeField] private SpriteRenderer mySprite;
-    
-    private void Awake()
+    [SerializeField] private Image myImage;
+    private void OnEnable()
     {
-        GameManager.OnGameStateChanged += GameManagerOnOnGameStateChanged;
-    }
-    
-    private void OnDestroy()
-    {
-        GameManager.OnGameStateChanged -= GameManagerOnOnGameStateChanged;
-    }
-    private void GameManagerOnOnGameStateChanged(GameManager.GameState state)
-    {
-        if (state == GameManager.GameState.Win && GameManager.Instance.victoryCount >= requiredNumber)
+        if (GameManager.Instance.VictoryCount >= requiredNumber)
         {
-            Invoke("FadeOut",2);
+            FadeOut();
         }
     }
-
     private void FadeOut()
     {
-        mySprite.DOFade(0, 2);
+        myImage.DOFade(0, 2);
         transform.DOPunchRotation(new Vector3(0, 0, 10), 2, 5);
     }
 }

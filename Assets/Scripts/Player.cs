@@ -40,7 +40,8 @@ public class Player : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (GameManager.Instance.state == GameManager.GameState.Play) PlayerMovement();
+        if (GameManager.Instance.state != GameManager.GameState.Play)return;
+        PlayerMovement();
         if (transform.position.y < -0.6f)
         {
             GameManager.Instance.UpdateGameState(GameManager.GameState.Lose);

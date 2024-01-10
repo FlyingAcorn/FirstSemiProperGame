@@ -1,33 +1,21 @@
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Stars : MonoBehaviour
 {
     [SerializeField] private int requiredNumber;
-    [SerializeField]  private SpriteRenderer mySprite;
-
-    private void Awake()
+    [SerializeField]  private Image myImage;
+    private void OnEnable()
     {
-        GameManager.OnGameStateChanged += GameManagerOnOnGameStateChanged;
-    }
-    // awake yanlızca bir kere cağırılıyor diye dotween düzgün çalışmıyor
-    // onu ref alarak çözebilirsin yada kurcala lock scriptide aynı durumdan muzdarip
-    
-    private void OnDestroy()
-    {
-        GameManager.OnGameStateChanged -= GameManagerOnOnGameStateChanged;
-    }
-    private void GameManagerOnOnGameStateChanged(GameManager.GameState state)
-    {
-        if (state != GameManager.GameState.Win && GameManager.Instance.victoryCount !>= requiredNumber)return;
+        if (GameManager.Instance.VictoryCount >= requiredNumber)
         {
-            Invoke("FadeIn",3);
+            DOVirtual.DelayedCall(2, FadeIn);
         }
     }
-
     private void FadeIn()
     {
-        mySprite.DOFade(1, 2);
+        myImage.DOFade(1, 2);
         transform.DOPunchRotation(new Vector3(0, 0, -10f), 2, 5);
     }
 }

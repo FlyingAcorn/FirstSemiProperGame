@@ -1,55 +1,16 @@
-using System;
 using UnityEngine;
 
-public class UIManager : MonoBehaviour
+public class UIManager : Singleton<UIManager>
 {
-   private Animator _myAnim;
    [SerializeField] private GameObject[] panels;
-   private static readonly int Menu = Animator.StringToHash("Menu");
-   private static readonly int Play = Animator.StringToHash("Play");
-   private static readonly int Win = Animator.StringToHash("Win");
-   private static readonly int Lose = Animator.StringToHash("Lose");
-   
-   private void Awake()
+   public void CloseAllPanels()
    {
-      _myAnim = GetComponent<Animator>();
-      GameManager.OnGameStateChanged += GameManagerOnOnGameStateChanged;
+      foreach (var t in panels)
+      {
+         t.SetActive(false);
+      }
    }
-
-   private void OnDestroy()
-   {
-      GameManager.OnGameStateChanged -= GameManagerOnOnGameStateChanged;
-   }
-
-   private void GameManagerOnOnGameStateChanged(GameManager.GameState state)
-   {
-       foreach (var t in panels)
-       {
-          t.SetActive(false);
-       }
-       switch (state)
-       {
-          case GameManager.GameState.Pause:
-             _myAnim.SetTrigger(Menu);
-             panels[0].SetActive(true);
-             break;
-          case GameManager.GameState.Win:
-             _myAnim.SetTrigger(Win);
-             if (GameManager.Instance.victoryCount >= 3)
-             {
-                panels[3].SetActive(true);
-             }
-             else panels[1].SetActive(true);
-             break;
-          case GameManager.GameState.Lose:
-             _myAnim.SetTrigger(Lose);
-             panels[2].SetActive(true);
-             break;
-          case GameManager.GameState.Play:
-             _myAnim.SetTrigger(Play);
-             break;
-          default:
-             throw new ArgumentOutOfRangeException(nameof(state), state, null);
-       }
-   }
+   public void Pause() => panels[0].SetActive(true);
+   public void Failure() => panels[2].SetActive(true);
+   public void Succeed() => panels[1].SetActive(true);
 }

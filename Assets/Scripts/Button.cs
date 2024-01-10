@@ -4,47 +4,35 @@ using UnityEngine.SceneManagement;
 
 public class Button : MonoBehaviour
 {
-    [SerializeField] private GameObject[] victoryButtonLockSprites;
+    [SerializeField] private GameObject[] victoryButtonLockImages;
     public void Play() => GameManager.Instance.UpdateGameState(GameManager.GameState.Play);
-    public void StartGame() => SceneManager.LoadScene("LVL1");
+    public void StartGame() => SceneManager.LoadScene(1);
 
     public void Restart()
     {
+        if (GameManager.Instance.state == GameManager.GameState.Win)GameManager.Instance.VictoryCount -= 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         GameManager.Instance.UpdateGameState(GameManager.GameState.Play);
     }
-
     public void Leave() => Application.Quit();
-
-    // button manager yerine classı butun butonlara ekleyip tek ChooseLevel methoduyla yapabilirdim.
-
-    public void Lvl1()
+    
+    // canvası baştan yap ve dön buraya
+    
+    public void PlayerLevel(int lvl)
     {
-        if (GameManager.Instance.victoryCount >= 0) SceneManager.LoadScene(1);
+        var vC =Mathf.Min(lvl, GameManager.Instance.VictoryCount);
+        if (vC < lvl -1)
+        {
+            victoryButtonLockImages[lvl - 1].transform.DOPunchRotation(new Vector3(0, 0, 10), 2, 5);
+            return;
+        }
+        if (GameManager.Instance.VictoryCount <3 && SceneManager.GetActiveScene().buildIndex >= lvl)
+        {
+            
+            GameManager.Instance.VictoryCount -= 1;
+        }
+        SceneManager.LoadScene(lvl);
         GameManager.Instance.UpdateGameState(GameManager.GameState.Play);
-        GameManager.Instance.victoryCount = GameManager.Instance.victoryCount >=3 ? 3 : 0;
-    }
-
-    public void Lvl2()
-    {
-        if (GameManager.Instance.victoryCount >= 1)
-        {
-            SceneManager.LoadScene(2);
-            GameManager.Instance.UpdateGameState(GameManager.GameState.Play);
-            GameManager.Instance.victoryCount = GameManager.Instance.victoryCount >=3 ? 3 : 1;
-        }
-        else victoryButtonLockSprites[0].transform.DOPunchRotation(new Vector3(0, 0, 10), 2, 5);
-    }
-
-    public void Lvl3()
-    {
-        if (GameManager.Instance.victoryCount >= 2)
-        {
-            SceneManager.LoadScene(3);
-            GameManager.Instance.UpdateGameState(GameManager.GameState.Play);
-            GameManager.Instance.victoryCount = GameManager.Instance.victoryCount >=3 ? 3 : 2;
-        }
-        else victoryButtonLockSprites[1].transform.DOPunchRotation(new Vector3(0, 0, 10), 2, 5);
     }
 }
 

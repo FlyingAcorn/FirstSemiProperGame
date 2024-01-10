@@ -1,11 +1,20 @@
 using System;
+using DG.Tweening;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
     public static event Action<GameState> OnGameStateChanged;
-    public int victoryCount;
-
+    private int _victoryCount;
+    public int VictoryCount
+    {
+        get => _victoryCount;
+         set
+        {
+            _victoryCount = Mathf.Min(3, value);
+                Debug.Log(VictoryCount);
+        }
+    }
     public enum GameState
     {
         Play,
@@ -13,21 +22,7 @@ public class GameManager : MonoBehaviour
         Lose,
         Win,
     }
-
     public GameState state;
-    
-    public static GameManager Instance { get; private set; }
-
-    private void Awake()
-    {
-        if (Instance != null && Instance != this) Destroy(this);
-        else
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-    }
-
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape))
@@ -40,19 +35,27 @@ public class GameManager : MonoBehaviour
     public void UpdateGameState(GameState newState)
     {
         state = newState;
-        switch (newState)
+        var uiManager = UIManager.Instance;
+        var cameraManager = CameraManager.Instance;
+        uiManager.CloseAllPanels();
+        if (newState == GameState.Pause)
         {
-            case GameState.Play:
-                break;
-            case GameState.Pause:
-                break;
-            case GameState.Lose:
-                break;
-            case GameState.Win:
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
+            uiManager.Pause();
+            cameraManager.Pause();
         }
+        else if (newState == GameState.Play) cameraManager.Playing();
+        else if (newState == GameState.Lose)
+        {
+            DOVirtual.DelayedCall(2, uiManager.Failure);
+            cameraManager.Failure();
+        }
+        else if (newState == GameState.Win)
+        {
+            VictoryCount += 1;
+            DOVirtual.DelayedCall(2, uiManager.Succeed);
+            cameraManager.Succeed();
+        } 
+        else throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
         OnGameStateChanged?.Invoke(newState);
     }
 }
